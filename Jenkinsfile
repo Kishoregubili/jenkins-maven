@@ -6,20 +6,34 @@ pipeline {
                sh "mvn clean compile"
             }
         }
-        stage('Test') {
+        stage('test') {
             steps {
                 sh "mvn test" 
             }
         }
-        stage('Deploy') {
+        stage('deploy') {
             steps {
                 sh "mvn package" 
             }
         }
-        stage('Archiveing'){
-	        steps{
+	stage('Build Docker Image') {
+            steps {
+                sh "docker build -t kishoregubili/docker-jenkinsfile:${BUILD_NUMBER} ." 
+            }
+        }
+	stage('Docker Login') {
+            steps {
+                sh "docker login -u kishoregubili -p kishore2A@" 
+            }
+        }stage('Docker Pushing to Repository') {
+            steps {
+                sh "docker push kishoregubili/docker-jenkinsfile:${BUILD_NUMBER}" 
+            }
+        }
+	stage('Archiveing'){
+	   steps{
 	       archiveArtifacts '**/target/*.jar'
 	       }
-	    }
+	}
     }
 }
