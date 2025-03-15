@@ -25,7 +25,8 @@ pipeline {
             steps {
                 sh "docker login -u kishoregubili -p kishore2A@" 
             }
-        }stage('Docker Pushing to Repository') {
+        }
+	stage('Docker Pushing to Repository') {
             steps {
                 sh "docker push kishoregubili/docker-jenkinsfile:${BUILD_NUMBER}" 
             }
